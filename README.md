@@ -20,17 +20,45 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+## Lead Capture Form & Google Sheets Integration
 
-To learn more about Next.js, take a look at the following resources:
+The landing page includes a lead form (`#get-started`) that appends submissions to a Google Sheet via the API route `app/api/lead/route.ts`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Required Environment Variables
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Create an `.env.local` file with:
 
-## Deploy on Vercel
+```
+GOOGLE_SERVICE_ACCOUNT_EMAIL=your-service-account@project.iam.gserviceaccount.com
+GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
+GOOGLE_SHEET_ID=your_sheet_id_here
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Notes:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+-   Escape newlines in the private key with `\n` if putting it on one line.
+-   The sheet must have a tab named `Leads` with columns A-E available (Timestamp, Name, Email, Company, Message).
+-   Make sure the service account has edit access to the sheet.
+
+### Testing Locally
+
+1. Add env vars.
+2. Run `npm run dev`.
+3. Submit the form. Check the Google Sheet for a new row.
+
+### Error Handling
+
+-   Missing required fields returns 400.
+-   Missing credentials returns 500.
+-   API returns JSON `{ success: boolean; error?: string }`.
+
+## Deployment
+
+Provide the same environment variables in your hosting platform (e.g., Vercel project settings). Private key must preserve line breaks or `\n` escapes.
+
+## Next Steps / Enhancements
+
+-   Add server-side validation & rate limiting.
+-   Add captcha for spam protection.
+-   Replace basic inputs with shadcn `Input` & `Textarea` components via CLI (`npx shadcn@latest add input textarea`).
+-   Send confirmation email on submission.
