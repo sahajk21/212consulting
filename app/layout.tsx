@@ -5,7 +5,7 @@ import "./globals.css";
 const montserrat = Montserrat({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
 
 export const metadata: Metadata = {
-	title: "212 Consulting",
+	title: "2Twelve Consulting",
 	description: "Consulting services to help your business thrive in the digital age.",
 };
 
