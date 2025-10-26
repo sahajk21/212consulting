@@ -205,11 +205,13 @@ export default function Home() {
 					</motion.div>
 				</motion.div>
 
-				<div className="relative z-10 flex min-h-screen items-center py-24">
-					<motion.div {...heroMotionProps} className="mx-auto flex max-w-5xl flex-col items-center gap-10 px-6 text-center text-primary-foreground">
-						<div className="space-y-6">
+				<div className="relative z-10 flex min-h-screen items-center py-24 w-full">
+					<motion.div {...heroMotionProps} className="mx-auto flex w-full max-w-5xl flex-col items-center gap-10 px-6 text-center text-primary-foreground">
+						<div className="flex w-full flex-col items-center space-y-6">
 							<h1 className="text-5xl font-bold leading-tight md:text-7xl">Your business should run itself</h1>
-							<TypewriterEffectSmooth className="text-3xl font-semibold leading-tight md:text-4xl" words={[{ text: "We" }, { text: "make" }, { text: "sure" }, { text: "it" }, { text: "does." }]} />
+							<div className="flex w-full justify-center">
+								<TypewriterEffectSmooth className="text-xl font-semibold leading-tight md:text-2xl md:text-4xl" words={[{ text: "We" }, { text: "make" }, { text: "sure" }, { text: "it" }, { text: "does." }]} />
+							</div>
 						</div>
 						<Button asChild size="lg" className="rounded-full px-8 py-6 text-lg md:px-10">
 							<Link href="#get-started">Get Started</Link>

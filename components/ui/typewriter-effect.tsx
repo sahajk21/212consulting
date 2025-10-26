@@ -45,9 +45,9 @@ export const TypewriterEffect = ({ words, className, cursorClassName }: Typewrit
 export const TypewriterEffectSmooth = ({ words, className, cursorClassName }: TypewriterSharedProps) => {
 	const wordsArray = words.map((word) => ({ ...word, text: word.text.split("") }));
 	return (
-		<div className={cn("flex justify-center space-x-1", className)}>
-			<motion.div className="overflow-hidden" initial={{ width: "0%" }} whileInView={{ width: "fit-content" }} transition={{ duration: 2, ease: "linear", delay: 1 }}>
-				<div className="font-semibold leading-tight" style={{ whiteSpace: "nowrap" }}>
+		<div className={cn("flex items-center justify-center space-x-1", className)}>
+			<motion.div className="overflow-hidden" initial={{ width: "0%" }} whileInView={{ width: "fit-content" }} transition={{ duration: 2, ease: "linear", delay: 1 }} viewport={{ once: true }}>
+				<div className="font-semibold leading-tight text-center" style={{ whiteSpace: "nowrap" }}>
 					{wordsArray.map((word, idx) => (
 						<div key={`word-${idx}`} className="inline-block">
 							{word.text.map((char, index) => (
@@ -60,7 +60,7 @@ export const TypewriterEffectSmooth = ({ words, className, cursorClassName }: Ty
 					))}
 				</div>
 			</motion.div>
-			<motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }} className={cn("block rounded-sm w-1 h-8 md:h-10 lg:h-12 bg-primary-foreground", cursorClassName)} />
+			<motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }} className={cn("block shrink-0 rounded-sm w-1 h-8 md:h-10 lg:h-12 bg-primary-foreground", cursorClassName)} />
 		</div>
 	);
 };
