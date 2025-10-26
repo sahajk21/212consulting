@@ -9,6 +9,8 @@ export default function CardShowcase({ cards, progressBarClass = "bg-black/10", 
 	const [activeIndex, setActiveIndex] = useState(0);
 	const [progress, setProgress] = useState(0);
 	const [isMobile, setIsMobile] = useState(false);
+	const [isInView, setIsInView] = useState(false);
+	const containerRef = useRef<HTMLDivElement>(null);
 	const progressIntervalRef = useRef<number | null>(null);
 
 	useEffect(() => {
@@ -26,7 +28,30 @@ export default function CardShowcase({ cards, progressBarClass = "bg-black/10", 
 	}, []);
 
 	useEffect(() => {
-		if (isMobile) return;
+		if (typeof window === "undefined" || !containerRef.current) return;
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						setIsInView(true);
+					}
+				});
+			},
+			{ threshold: 0.3 }
+		);
+
+		observer.observe(containerRef.current);
+
+		return () => {
+			if (containerRef.current) {
+				observer.unobserve(containerRef.current);
+			}
+		};
+	}, []);
+
+	useEffect(() => {
+		if (isMobile || !isInView) return;
 
 		const interval = 16;
 		const increment = (100 / (animationSpeed * 1000)) * interval;
@@ -68,7 +93,7 @@ export default function CardShowcase({ cards, progressBarClass = "bg-black/10", 
 				clearInterval(progressIntervalRef.current);
 			}
 		};
-	}, [activeIndex, animationSpeed, cards.length, loop, isMobile]);
+	}, [activeIndex, animationSpeed, cards.length, loop, isMobile, isInView]);
 
 	const handleCardClick = (index: number) => {
 		if (isMobile) return;
@@ -111,7 +136,7 @@ export default function CardShowcase({ cards, progressBarClass = "bg-black/10", 
 
 	if (isMobile) {
 		return (
-			<div style={{ padding: `${padding}px` }} className="hide-scrollbar flex h-full w-full flex-col overflow-y-auto overflow-x-hidden">
+			<div ref={containerRef} style={{ padding: `${padding}px` }} className="hide-scrollbar flex h-full w-full flex-col overflow-y-auto overflow-x-hidden">
 				<style>{`
 					.hide-scrollbar::-webkit-scrollbar { display: none; }
 					.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -132,8 +157,8 @@ export default function CardShowcase({ cards, progressBarClass = "bg-black/10", 
 										<div className={cn("text-lg font-semibold text-primary-foreground")}>{card.title}</div>
 									</div>
 								</div>
-								<div className={cn("text-sm font-medium opacity-80", textClass)}>{card.description}</div>
-								{card.tag && <div className={cn("text-sm font-medium", tagClass)}>{card.tag}</div>}
+								<div className={cn("text-sm font-medium opacity-80 pb-12", textClass)}>{card.description}</div>
+								{card.tag && <div className={cn("hidden md:block text-sm font-medium", tagClass)}>{card.tag}</div>}
 							</div>
 						);
 					})}
@@ -143,7 +168,7 @@ export default function CardShowcase({ cards, progressBarClass = "bg-black/10", 
 	}
 
 	return (
-		<div style={{ padding: `${padding}px` }} className="hide-scrollbar flex min-h-0 h-full w-full flex-1 items-center justify-center overflow-hidden">
+		<div ref={containerRef} style={{ padding: `${padding}px` }} className="hide-scrollbar flex min-h-0 h-full w-full flex-1 items-center justify-center overflow-hidden">
 			<style>{`
 				.hide-scrollbar::-webkit-scrollbar { display: none; }
 				.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }

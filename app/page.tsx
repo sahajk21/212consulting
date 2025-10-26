@@ -82,7 +82,7 @@ export default function Home() {
 							<p className="text-base text-foreground">We study your business, its rhythm, and the points of friction to surface the truths hiding in plain sight.</p>
 						</div>
 					</div>
-					<p className="text-base font-semibold text-primary">Clarity comes first; every improvement begins with understanding.</p>
+					<p className="text-base font-semibold text-primary">Every improvement begins with understanding.</p>
 				</div>
 			),
 		},
